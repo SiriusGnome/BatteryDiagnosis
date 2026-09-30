@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estado de la batería del iPhone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b16;--card:rgba(14,22,44,.78);--tx:#e6f1ff;--mu:#8ea3c4;--bd:#1f3358;--ac:#22e5ff;--ac2:#b46bff;--ok:#39ffa0;--wa:#ffc04d;--er:#ff4d7a;--glow:0 0 18px rgba(34,229,255,.22);--grid:rgba(34,229,255,.05);--hf:Orbitron,"Segoe UI",system-ui,sans-serif;--mf:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eaf2fb;--card:rgba(255,255,255,.86);--tx:#0b1730;--mu:#4a5f82;--bd:#b8c9e4;--ac:#0077c8;--ac2:#7a2fd6;--ok:#008a55;--wa:#a86100;--er:#c4143f;--glow:0 0 14px rgba(0,119,200,.16);--grid:rgba(0,119,200,.07)}}
+:root[data-theme="light"]{--bg:#eaf2fb;--card:rgba(255,255,255,.86);--tx:#0b1730;--mu:#4a5f82;--bd:#b8c9e4;--ac:#0077c8;--ac2:#7a2fd6;--ok:#008a55;--wa:#a86100;--er:#c4143f;--glow:0 0 14px rgba(0,119,200,.16);--grid:rgba(0,119,200,.07)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background-color:var(--bg);background-image:radial-gradient(60% 40% at 85% -10%,rgba(180,107,255,.18),transparent),radial-gradient(50% 35% at 0 0,rgba(34,229,255,.15),transparent),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:auto,auto,32px 32px,32px 32px;background-attachment:fixed}
+main{max-width:860px;margin:0 auto;padding:18px 14px 40px}
+.tag{font:500 11px var(--mf);letter-spacing:.18em;color:var(--mu);margin-bottom:4px}
+h1{font:700 22px/1.25 var(--hf);letter-spacing:.03em;margin:0 0 6px;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:500 13px var(--hf);letter-spacing:.16em;text-transform:uppercase;color:var(--ac);margin:24px 0 8px}
+h2::before{content:"// ";color:var(--ac2)}
+h3{font:500 14px var(--hf);letter-spacing:.08em;margin:16px 0 2px}
+p.sub{margin:0 0 14px;color:var(--mu)}
+ol.s{padding-left:20px;margin:0 0 8px;color:var(--mu)}
+textarea{width:100%;height:150px;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:10px;font:12px/1.4 var(--mf);resize:vertical;box-shadow:var(--glow)}
+textarea:focus,textarea.drag{outline:none;border-color:var(--ac);box-shadow:0 0 0 1px var(--ac),var(--glow)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+button,label.b{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:9px 14px;font:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+button:hover,label.b:hover{border-color:var(--ac);box-shadow:var(--glow)}
+button.p{background:linear-gradient(90deg,var(--ac),var(--ac2));color:#04101c;border:0;font-weight:700;letter-spacing:.08em;text-transform:uppercase;box-shadow:var(--glow)}
+button:focus-visible,label.b:focus-within,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.ch{padding:6px 12px}.ch[aria-pressed=true]{color:var(--ac);border-color:var(--ac);background:rgba(34,229,255,.12);box-shadow:var(--glow)}
+.hero{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--mu);border-radius:8px;padding:16px;box-shadow:var(--glow);backdrop-filter:blur(6px)}
+.hero h2{font:700 19px/1.3 var(--hf);letter-spacing:.02em;text-transform:none;color:var(--tx);margin:0 0 6px}.hero h2::before{content:none}
+.hero p{margin:0 0 12px;color:var(--mu)}
+.hero::after{content:"";position:absolute;left:0;right:0;top:-30%;height:30%;background:linear-gradient(transparent,rgba(34,229,255,.10),transparent);animation:scan 5s linear infinite;pointer-events:none}
+@keyframes scan{to{top:110%}}
+@media (prefers-reduced-motion:reduce){.hero::after{display:none;animation:none}}
+.bar{height:12px;background:rgba(127,150,190,.15);border:1px solid var(--bd);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;position:relative;box-shadow:0 0 12px rgba(34,229,255,.6)}
+.bar i::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(7,11,22,.55) 8px 10px)}
+.bl{display:flex;justify-content:space-between;font:400 11px var(--mf);color:var(--mu);margin-top:5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.m{background:var(--card);border:1px solid var(--bd);padding:10px 10px 10px 12px;border-left:2px solid var(--ac);backdrop-filter:blur(6px);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+.m small{color:var(--mu);display:block;font:400 11px var(--mf);letter-spacing:.06em;text-transform:uppercase}
+.m strong{font:700 20px var(--hf);color:var(--ac);text-shadow:0 0 12px rgba(34,229,255,.35);font-variant-numeric:tabular-nums;display:block;margin:2px 0}
+.m small.h{font:400 12.5px/1.35 system-ui,sans-serif;letter-spacing:0;text-transform:none;margin-top:2px}
+ul.f{padding-left:0;list-style:none;margin:0}
+ul.f li{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:9px 12px;margin-bottom:6px;backdrop-filter:blur(6px)}
+.t{display:inline-block;font:500 10.5px var(--mf);letter-spacing:.06em;text-transform:uppercase;border-radius:3px;padding:1px 6px;margin-right:8px;border:1px solid var(--bd);color:var(--mu)}
+.t.v{color:var(--ok);border-color:var(--ok)}.t.i{color:var(--wa);border-color:var(--wa)}
+details{margin-top:24px}summary{cursor:pointer;font:500 13px var(--hf);letter-spacing:.1em;color:var(--ac);padding:6px 0}
+input[type=search]{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);font:13px var(--mf);margin-bottom:8px}
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font:12.5px var(--mf)}
+th{color:var(--mu);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--bd);white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.k{cursor:pointer}tr.k:hover{background:rgba(34,229,255,.08)}
+tr.d td{white-space:normal;color:var(--mu);font-size:12px}
+svg{stroke:var(--ac);fill:none;stroke-width:1.6}
+.e{color:var(--mu);padding:14px;text-align:center;font:400 13px var(--mf)}
+</style></head>
+<body><main>
+<div class="tag">// DIAGNÓSTICO DE BATERÍA · iOS</div><h1>Estado de la batería de tu iPhone</h1>
+<p class="sub">Descubre en qué estado está la batería de tu iPhone a partir de su fichero de diagnóstico.</p><ol class="s"><li>Pega el contenido del log o suelta el fichero en el cuadro.</li><li>Pulsa Analizar.</li></ol><p class="sub" style="font-size:13px">Todo se procesa en tu navegador; el log no se envía a ningún sitio.</p>
+<textarea id="in" placeholder="Pega aquí el contenido del log o suelta el fichero…" aria-label="Contenido del log"></textarea>
+<div class="row">
+<button class="p" id="go">Analizar</button>
+<label class="b">Abrir fichero<input type="file" id="fi" hidden></label>
+<button id="ex">Cargar ejemplo</button>
+<button id="cl">Limpiar</button>
+</div>
+<div id="out"><div class="e">Aún no hay resultados. Pega un log y pulsa Analizar, o prueba con el ejemplo.</div></div>
+</main>
+<script>
+const TOK=e=>{if(e.n===null)return false;const v=Math.abs(e.n)>200?e.n/100:e.n;return v>=-20&&v<=90};
+const CFG=[
+{l:'Salud de la batería',h:'Capacidad que conserva frente a una batería nueva.',k:['maximumcapacitypercent','maxcapacitypercent','batteryhealth'],u:' %'},
+{l:'Ciclos de carga',h:'Cargas completas acumuladas (de 0 a 100 %, sumando cargas parciales).',k:['cyclecount','batterycyclecount'],f:'cycle',ok:e=>e.n!==null&&e.n>=0&&e.n<10000,u:''},
+{l:'Capacidad original',h:'Lo que almacenaba cuando era nueva.',k:['designcapacity'],u:' mAh'},
+{l:'Capacidad actual',h:'Lo que almacena ahora a plena carga.',k:['nominalchargecapacity','applerawmaxcapacity'],u:' mAh'},
+{l:'Temperatura',h:'Última temperatura registrada en la batería.',k:['temperature','virtualtemperature'],f:'temperature',ok:TOK,t:1},
+{l:'Voltaje',h:'Tensión eléctrica en ese momento.',k:['voltage','applerawbatteryvoltage'],u:' mV'},
+{l:'Corriente',h:'Negativo: se está gastando. Positivo: se está cargando.',k:['amperage','instantamperage'],u:' mA'},
+{l:'Nivel de carga',h:'Porcentaje de batería en ese momento.',k:['currentcapacity','stateofcharge','soc'],u:' %'},
+{l:'Resistencia interna',h:'Cuanto más sube con el tiempo, peor entrega la energía.',k:['weightedra','chemicalweightedra','wra','batteryhealthmetric'],u:' mΩ'},
+{l:'Fallos graves',h:'0 significa que no hay ninguno registrado.',k:['permanentfailurestatus'],u:''},
+{l:'Avisos de servicio',h:'0 significa que no hay avisos.',k:['batteryserviceflags','bhserviceflags'],u:''},
+{l:'Temperatura máxima',h:'La más alta que ha llegado a alcanzar (se interpreta en décimas de grado).',k:['maximumtemperature'],t:'d'},
+{l:'Temperatura mínima',h:'La más baja registrada (se interpreta en décimas de grado).',k:['minimumtemperature'],t:'d'},
+{l:'Temperatura media',h:'Media registrada, en grados.',k:['averagetemperature'],t:'c'},
+{l:'Voltaje máximo',h:'Tensión más alta registrada.',k:['maximumpackvoltage'],u:' mV'},
+{l:'Voltaje mínimo',h:'Tensión más baja registrada.',k:['minimumpackvoltage'],u:' mV'},
+{l:'Máx. corriente de carga',h:'Pico de corriente al cargar.',k:['maximumchargecurrent'],u:' mA'},
+{l:'Máx. corriente de descarga',h:'Pico de consumo registrado.',k:['maximumdischargecurrent'],u:' mA'},
+{l:'Tiempo de funcionamiento',h:'Contador acumulado; la unidad no está confirmada, así que se muestra el número tal cual.',k:['totaloperatingtime'],u:''},
+{l:'¿Está cargando?',h:'Si en ese momento entraba energía a la batería.',k:['ischarging'],b:1},
+{l:'¿Conectado a corriente?',h:'Si había un cargador enchufado.',k:['externalconnected'],b:1},
+{l:'¿Carga completa?',h:'Si había llegado al máximo.',k:['fullycharged'],b:1},
+{l:'Potencia del cargador',h:'Vatios que ofrecía el cargador.',k:['adapterwatts','watts'],u:' W'},
+{l:'Tiempo hasta carga completa',h:'Estimación del propio iPhone.',k:['avgtimetofull'],mn:1},
+{l:'Motivo de no carga',h:'0 suele indicar que no hay ningún impedimento.',k:['notchargingreason'],u:''},
+{l:'Tiempo restante',h:'Autonomía estimada por el iPhone.',k:['timeremaining','avgtimetoempty'],mn:1},
+{l:'Qmax (celda 0)',h:'Capacidad química medida por el propio chip de la batería.',k:['qmaxcell0','qmax0'],u:' mAh'},
+{l:'Nivel diario mínimo',h:'Carga más baja del día.',k:['dailyminsoc'],u:' %'},
+{l:'Nivel diario máximo',h:'Carga más alta del día.',k:['dailymaxsoc'],u:' %'}];
+const GR=[['d','Desgaste','Cuánto ha envejecido la batería',[0,1,2,3,26,8,18]],['c','Carga','Cargador y estado de carga',[19,20,21,22,23,24,25]],['e','Energía','Voltaje, corriente y nivel',[7,27,28,5,6,14,15,16,17]],['t','Temperatura','El calor es el mayor enemigo de la batería',[4,11,12,13]],['a','Avisos y fallos','Problemas registrados por el iPhone',[9,10]]];
+const REL=/batter|cycle|capacity|qmax|(^|_)ra$|weightedra|temperature|voltage|amperage|soc|charge|permanentfailure|serviceflag|resistance|thermal|gasgauge|adapter|externalconnected|^wra|lifetime|charging|watts|timeto|operatingtime|fullycharged|notcharging|timeremaining/i;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const RE=/"([A-Za-z0-9_ .\-]+)"\s*[:=]\s*(-?\d+(?:\.\d+)?(?![\d:-])|"[^"]*"|true|false|Yes|No)|<key>([^<]+)<\/key>\s*<(integer|real|string|true|false)\s*\/?>([^<]*)|\b([A-Za-z][A-Za-z0-9_]{2,})\s*[=:]\s*(-?\d+(?:\.\d+)?|true|false|yes|no)\b/g;
+const TS=/\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?/;
+function parse(t){
+  const out=[];let ts='',pk=null;
+  const add=(k,v,i)=>{k=String(k).trim().replace(/^last_value_/,'');if(!REL.test(k))return;v=String(v).replace(/^"|"$/g,'');
+    const n=parseFloat(v);out.push({k,v,n:isNaN(n)||/[a-z]/i.test(v)?null:n,line:i+1,ts})};
+  const lines=t.split(/\r?\n/);
+  for(let i=0;i<lines.length&&out.length<200000;i++){
+    const ln=lines[i],m=ln.match(TS);if(m)ts=m[0];
+    const kk=ln.match(/^\s*<key>([^<]+)<\/key>\s*$/);
+    if(kk){pk=kk[1];continue}
+    if(pk){const vv=ln.match(/^\s*<(integer|real|string|true|false)\s*\/?>([^<]*)/);
+      if(vv){add(pk,/^(true|false)$/.test(vv[1])?vv[1]:vv[2],i);pk=null;continue}
+      if(ln.trim())pk=null}
+    RE.lastIndex=0;let r;
+    while((r=RE.exec(ln))){
+      if(r[1])add(r[1],r[2],i);
+      else if(r[3])add(r[3],/^(true|false)$/.test(r[4])?r[4]:r[5],i);
+      else if(r[6])add(r[6],r[7],i);
+    }
+  }
+  return out;
+}
+function last(map,keys,f,ok){
+  for(const k of keys){const a=map.get(k);if(a)for(let j=a.length-1;j>=0;j--)if(!ok||ok(a[j]))return a[j]}
+  if(f)for(const [k,a] of map)if(k.includes(f)&&!/maximum|minimum|average|avg|limit|thresh|sample|lastqmax|^max|^min/.test(k))for(let j=a.length-1;j>=0;j--)if(!ok||ok(a[j]))return Object.assign({},a[j],{fz:1});
+  return null}
+function fmt(c,e){
+  if(!e)return '—';
+  if(c.b)return /^(true|yes|1)$/i.test(e.v)?'Sí':'No';
+  if(c.t&&e.n!==null){const x=c.t==='d'?e.n/10:c.t==='c'?e.n:(Math.abs(e.n)>200?e.n/100:e.n);return x>=-20&&x<=90?x.toFixed(1)+' °C':'Valor no válido'}
+  if(c.mn&&e.n!==null){if(e.n>=65535)return '—';return e.n>=60?Math.floor(e.n/60)+' h '+Math.round(e.n%60)+' min':Math.round(e.n)+' min'}
+  if(c.hr&&e.n!==null)return Math.round(e.n/3600).toLocaleString('es-ES')+' h';
+  return e.v+(c.u||'');
+}
+function spark(a){
+  const v=a.filter(e=>e.n!==null).map(e=>e.n);
+  if(v.length<3)return '';
+  const s=v.length>60?v.filter((_,i)=>i%Math.ceil(v.length/60)===0):v;
+  const mn=Math.min(...s),mx=Math.max(...s),d=(mx-mn)||1;
+  const p=s.map((x,i)=>(i*(88/(s.length-1))+1).toFixed(1)+','+(21-(x-mn)/d*20).toFixed(1)).join(' ');
+  return '<svg width="90" height="22" viewBox="0 0 90 22" aria-hidden="true"><polyline points="'+p+'"/></svg>';
+}
+function analyze(){
+  const txt=$('in').value.trim();
+  if(!txt){$('out').innerHTML='<div class="e">El cuadro está vacío. Pega un log o suelta un fichero.</div>';return}
+  if(/^bplist00/.test(txt)||txt.startsWith('SQLite format 3')||(txt.slice(0,3000).match(/[\u0000\ufffd]/g)||[]).length>20){$('out').innerHTML='<div class="e">Este fichero es binario (plist binario o base de datos SQLite) y no se puede leer como texto. Conviértelo antes a texto (por ejemplo plist a XML) o pega el contenido ya extraído.</div>';return}
+  const ents=parse(txt),map=new Map();
+  ents.forEach(e=>{const k=e.k.toLowerCase();(map.get(k)||map.set(k,[]).get(k)).push(e)});
+  if(!ents.length){$('out').innerHTML='<div class="e">No he encontrado datos de batería en este texto. Puede que sea otro tipo de log o que esté incompleto o dañado.</div>';return}
+  const E=i=>last(map,CFG[i].k,CFG[i].f,CFG[i].ok),N=i=>{const e=E(i);return e&&e.n!==null?e.n:null};
+  let health=N(0),src='';
+  const des=N(2),cur=N(3);
+  if(health===null&&des&&cur){health=cur/des*100;src=' (calculada con la capacidad actual y la original)'}
+  const cyc=N(1),tr=E(4),pf=E(9);
+  const tc=e=>Math.abs(e.n)>200?e.n/100:e.n;
+  const temps=[...['temperature','virtualtemperature'].flatMap(k=>map.get(k)||[]).filter(e=>e.n!==null).map(tc),...(map.get('maximumtemperature')||[]).filter(e=>e.n!==null).map(e=>e.n/10)].filter(x=>x>=-20&&x<=90);
+  const tmax=temps.length?Math.max(...temps):null;
+  let lv=0,title,msg;const todo=[],notes=[];
+  let lvW=0;if(pf&&pf.n)lvW=4;else if(health!==null&&health<70)lvW=3;else if(health!==null&&health<80||cyc>500)lvW=2;
+  const heat=tmax>45;lv=Math.max(lvW,heat?2:tmax>38?1:0);
+  if(health===null&&cyc===null&&!(pf&&pf.n)){
+    title='No hay datos suficientes';msg='El log tiene algunos datos de batería, pero no la salud ni los ciclos, así que no puedo darte un veredicto fiable.';lv=-1;
+  }else{
+    title=['Tu batería está en buen estado','Tu batería está en buen estado','Tu batería se está desgastando','Tu batería está muy desgastada','Se ha detectado un fallo grave'][lvW];
+    msg=['No hay señales de problemas en este log.','No hay señales de problemas en este log.','Todavía funciona, pero notarás menos autonomía que cuando era nueva.','Es probable que notes poca autonomía y apagados o ralentizaciones en momentos de mucho consumo.','El iPhone ha registrado un fallo permanente de la batería.'][lvW];
+  }
+  if(lv!==-1&&lvW<=1&&heat){title='La batería está bien, con un pico de temperatura alto';msg='Su desgaste es normal. El log registra una temperatura máxima de '+tmax.toFixed(1)+' °C (un pico registrado, no la temperatura actual).'}
+  if(pf&&pf.n)todo.push('Lleva el iPhone a un Servicio Técnico Autorizado de Apple para que lo revisen.');
+  if(health!==null&&health<80)todo.push('Cambiar la batería recupera la autonomía original. Puedes contrastar este dato en Ajustes > Batería > Estado de la batería.');
+  if(tmax>38)todo.push('Evita cargar el móvil al sol, bajo la almohada o con fundas muy gruesas: el calor acelera el desgaste.');
+  if(!todo.length)todo.push('No necesitas hacer nada. Para cuidarla, evita el calor y no la dejes mucho tiempo a 0 %.');
+  if(cyc!==null)notes.push(['Dato del log','Llevas '+cyc+' ciclos de carga. Apple diseña las baterías de iPhone para conservar el 80 % tras 500 ciclos (1000 en iPhone 15 y posteriores).']);
+  const bt=map.get('batterytrusted');if(bt&&bt.some(e=>e.v==='false'))notes.push(['Dato del log','batteryTrusted = false: el iPhone no marca esta batería como verificada.']);
+  const sf=E(10);if(sf&&sf.n>0)notes.push(['Dato del log','Los avisos de servicio valen '+sf.v+' (distinto de 0). No puedo traducir qué significa cada bit, así que no lo interpreto.']);
+  if(tmax!==null)notes.push(['Dato del log','La temperatura máxima registrada fue de '+tmax.toFixed(1)+' °C. Lo normal es entre 20 y 38 °C; por encima de 45 °C hay riesgo de desgaste y el iPhone limita la carga.']);
+  const nom=(map.get(CFG[3].k[0])||map.get(CFG[3].k[1])||[]).filter(e=>e.n!==null);
+  if(nom.length>1&&nom[0].v!==nom[nom.length-1].v){const f=nom[0],l=nom[nom.length-1];
+    notes.push(['Dato del log','La capacidad actual pasó de '+f.v+' a '+l.v+' mAh'+(f.ts&&l.ts?' entre '+f.ts+' y '+l.ts:'')+'.'])}
+  if(health!==null&&src)notes.push(['Estimación','La salud se ha calculado dividiendo la capacidad actual entre la original'+'; puede diferir unos puntos de lo que muestra Ajustes.']);
+  const bc=health===null?'var(--mu)':health>=80?'var(--ok)':health>=70?'var(--wa)':'var(--er)';
+  const col=lv<=1?'var(--ok)':lv===2?'var(--wa)':lv>=3?'var(--er)':'var(--mu)';
+  const gv=i=>{const e=E(i);return e?[fmt(CFG[i],e),e.fz?'Campo «'+e.k+'»: puede no ser el valor actual.':'']:[null,'']};
+  const alt=t=>{const c=[...map.entries()].filter(([k])=>k.includes(t)).slice(0,4).map(([k,a])=>a[0].k+' = '+a[a.length-1].v);return c.length?'Campos parecidos en el log: '+c.join('; ')+'.':''};
+  const g1=gv(1),g3=gv(3),t4=E(4),t13=E(13);let tv=null,tn='',tl='Temperatura';
+  if(t4&&t4.n!==null){tv=tc(t4).toFixed(1)+' °C';if(t4.fz)tn='Campo «'+t4.k+'».'}else if(t13&&t13.n!==null){tl='Temperatura media';tv=t13.n.toFixed(1)+' °C';tn=tmax!==null?'Máxima registrada: '+tmax.toFixed(1)+' °C.':''}else if(tmax!==null){tl='Temperatura máxima';tv=tmax.toFixed(1)+' °C'}
+  const gl=[['Salud',health!==null?health.toFixed(1)+' %':null,''],['Ciclos de carga',g1[0],g1[0]?g1[1]:alt('cycle')],[tl,tv,tv!==null?tn:alt('temp')],['Capacidad actual',g3[0],g3[1]]];
+  const GLANCE='<h2>De un vistazo</h2><div class="grid">'+gl.map(x=>'<div class="m"><small>'+x[0]+'</small><strong>'+(x[1]||'No consta')+'</strong>'+(x[1]?(x[2]?'<small class="h">'+esc(x[2])+'</small>':''):'<small class="h">'+esc(x[2]||'Este log no incluye ese dato.')+'</small>')+'</div>').join('')+'</div>';
+  let h='<h2>Resultado</h2><div class="hero" style="border-left-color:'+col+'"><h2>'+title+'</h2><p>'+msg+(health!==null?' Salud'+src+': '+health.toFixed(1)+' %.':'')+'</p>';
+  if(health!==null)h+='<div class="bar" role="img" aria-label="Salud '+health.toFixed(0)+'%"><i style="width:'+Math.max(0,Math.min(100,health))+'%;background:'+bc+'"></i></div><div class="bl"><span>0 %</span><span>80 %: se considera degradada</span><span>100 %</span></div>';
+  h+='</div>'+GLANCE+'<h2>Qué puedes hacer</h2><ul class="f">'+todo.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  if(notes.length)h+='<h2>Qué dice el log</h2><ul class="f">'+notes.map(f=>'<li><span class="t '+(f[0]==='Estimación'?'i':'v')+'">'+f[0]+'</span>'+esc(f[1])+'</li>').join('')+'</ul>';
+  h+='<h2>Tus datos por categorías</h2><div class="row" id="ch"></div>';
+  const bv=(c,e)=>{const a=c.k.map(k=>map.get(k)).find(Boolean)||[];return a.length>1?'Sí en '+a.filter(x=>/^(true|yes|1)$/i.test(x.v)).length+' de '+a.length+' muestras':fmt(c,e)};
+  const secs=GR.map(g=>{const cs=g[3].map(i=>{const c=CFG[i],e=last(map,c.k,c.f,c.ok);return e?'<div class="m"><small>'+c.l+'</small><strong>'+esc(c.b?bv(c,e):fmt(c,e))+'</strong><small class="h">'+(e.fz?'Campo «'+esc(e.k)+'»: puede no ser el valor actual.':c.h)+'</small></div>':''}).join('');return cs?{id:g[0],n:g[1],html:'<section data-g="'+g[0]+'"><h3>'+g[1]+'</h3><p class="sub">'+g[2]+'</p><div class="grid">'+cs+'</div></section>'}:null}).filter(Boolean);
+  h+='<div id="sec">'+(secs.map(x=>x.html).join('')||'<div class="e">Este log no incluye datos de estas categorías.</div>')+'</div>';
+  h+='<details><summary>Ver datos técnicos ('+map.size+' campos)</summary><input type="search" id="q" placeholder="Filtrar por nombre…" aria-label="Filtrar campos"><div class="tw"><table><thead><tr><th>Campo</th><th>Último</th><th>Veces</th><th>Mín</th><th>Máx</th><th>Evolución</th></tr></thead><tbody id="tb"></tbody></table></div></details>';
+  $('out').innerHTML=h;
+  const chips=[['all','Todo'],...secs.map(x=>[x.id,x.n])];
+  chips.forEach(([id,n])=>{const b=document.createElement('button');b.className='ch';b.textContent=n;b.setAttribute('aria-pressed',id==='all');
+    b.onclick=()=>{[...$('ch').children].forEach(x=>x.setAttribute('aria-pressed',x===b));document.querySelectorAll('#sec section').forEach(z=>z.hidden=id!=='all'&&z.dataset.g!==id)};$('ch').appendChild(b)});
+  const rows=[...map.entries()].map(([k,a])=>{const v=a.filter(e=>e.n!==null).map(e=>e.n);return{k:a[0].k,a,mn:v.length?Math.min(...v):'—',mx:v.length?Math.max(...v):'—'}}).sort((x,y)=>x.k.localeCompare(y.k));
+  function draw(f){
+    const tb=$('tb');tb.innerHTML='';
+    rows.filter(r=>r.k.toLowerCase().includes(f)).forEach(r=>{
+      const tr=document.createElement('tr');tr.className='k';tr.tabIndex=0;
+      tr.innerHTML='<td>'+esc(r.k)+'</td><td>'+esc(r.a[r.a.length-1].v)+'</td><td>'+r.a.length+'</td><td>'+r.mn+'</td><td>'+r.mx+'</td><td>'+spark(r.a)+'</td>';
+      const tg=()=>{const nx=tr.nextSibling;if(nx&&nx.className==='d'){nx.remove();return}
+        const d=document.createElement('tr');d.className='d';
+        d.innerHTML='<td colspan="6">'+r.a.slice(-40).map(e=>'L'+e.line+(e.ts?' '+esc(e.ts):'')+': '+esc(e.v)).join('<br>')+(r.a.length>40?'<br>… solo las últimas 40':'')+'</td>';
+        tr.after(d)};
+      tr.onclick=tg;tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tg()}};
+      tb.appendChild(tr)});
+  }
+  draw('');$('q').oninput=e=>draw(e.target.value.toLowerCase());
+}
+$('go').onclick=analyze;
+$('cl').onclick=()=>{$('in').value='';$('out').innerHTML='<div class="e">Aún no hay resultados. Pega un log y pulsa Analizar, o prueba con el ejemplo.</div>'};
+$('ex').onclick=()=>{
+  let s='';
+  for(let i=0;i<6;i++)s+='2026-09-'+(20+i)+' 10:00:00 {"BatteryCycleCount":'+(408+i*3)+',"DesignCapacity":2815,"NominalChargeCapacity":'+(2310-i*6)+',"Temperature":'+(3050+i*90)+',"Voltage":'+(3860-i*12)+',"Amperage":-'+(380+i*11)+',"CurrentCapacity":'+(72-i*6)+',"WeightedRa":'+(74+i*2)+',"PermanentFailureStatus":0,"MaximumTemperature":4120,"MinimumTemperature":810,"IsCharging":'+(i%2?'true':'false')+',"ExternalConnected":'+(i%2?'true':'false')+',"AdapterWatts":20,"AvgTimeToFull":'+(90-i*10)+'}\n';
+  $('in').value=s;analyze();
+};
+$('fi').onchange=async e=>{const f=e.target.files[0];if(f){$('in').value=await f.text();analyze()}};
+const ta=$('in');
+ta.ondragover=e=>{e.preventDefault();ta.classList.add('drag')};
+ta.ondragleave=()=>ta.classList.remove('drag');
+ta.ondrop=async e=>{e.preventDefault();ta.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){ta.value=await f.text();analyze()}};
+</script></body></html>
